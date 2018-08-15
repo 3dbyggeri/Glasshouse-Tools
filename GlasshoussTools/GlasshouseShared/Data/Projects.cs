@@ -28,6 +28,12 @@ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 THE POSSIBILITY OF SUCH DAMAGE.
+
+GlasshouseExcel may utilize certain third party software. Such third party software is copyrighted by their respective owners as indicated below.
+Netoffice - MIT License - https://github.com/NetOfficeFw/NetOffice/blob/develop/LICENSE.txt
+Excel DNA - zlib License - https://github.com/Excel-DNA/ExcelDna/blob/master/LICENSE.txt
+RestSharp - Apache License - https://github.com/restsharp/RestSharp/blob/develop/LICENSE.txt
+Newtonsoft - The MIT License (MIT) - https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md
 */
 #endregion
 
@@ -44,6 +50,45 @@ namespace GlasshouseShared
 {
     public class Projects
     {
+
+        /// <summary>
+        /// Gets the projects.
+        /// </summary>
+        /// <param name="apiKey">The API key.</param>
+        /// <returns></returns>
+        public static Dictionary<string, object> GetProjectsAllInfo(string apiKey)
+        {
+
+            var client = new RestClient(GlasshouseShared.Utils.urlApi);
+
+            var request = new RestRequest("projects", Method.GET);
+
+
+            // easily add HTTP Headers
+            request.AddHeader("access-token", apiKey);
+
+            request.RequestFormat = DataFormat.Json;
+
+            // execute the request
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode != System.Net.HttpStatusCode.OK) return null;
+
+            var content = response.Content; // raw content as string
+
+            cProjects projects = JsonConvert.DeserializeObject<cProjects>(content);
+
+            //var defaultStrings = (new int[10]).Select(x => "my value").ToList();
+
+            return new Dictionary<string, object>()
+                { 
+                    { "id", projects.projects.Select(x => x.id).Concat(projects.invited_projects.Select(x => x.id)).ToList()},
+                    { "name",projects.projects.Select(x => x.name).Concat(projects.invited_projects.Select(x => x.name)).ToList() },
+                    { "created_at", projects.projects.Select(x => x.created_at.ToString()).Concat(projects.invited_projects.Select(x => x.created_at.ToString())).ToList()},
+                    { "is_processing", projects.projects.Select(x => x.is_processing.ToString()).Concat(projects.invited_projects.Select(x => x.is_processing.ToString())).ToList()},
+                    { "url", projects.projects.Select(x => x.url).Concat(projects.invited_projects.Select(x => x.url)).ToList()},
+                    { "invited",  (new string[projects.projects.Count()]).Select(x => "False").Concat(projects.invited_projects.Select(x => "True")).ToList() }
+                };
+        }
 
         /// <summary>
         /// Gets the projects.
@@ -75,12 +120,12 @@ namespace GlasshouseShared
 
             Dictionary<string, string> dict = new Dictionary<string, string>();
 
-            foreach(cProject p in projects.projects)
+            foreach (cProject p in projects.projects)
             {
                 dict.Add(p.id, p.name);
             }
 
-            foreach(cInvitedProject p in projects.invited_projects)
+            foreach (cInvitedProject p in projects.invited_projects)
             {
                 dict.Add(p.id, p.name);
             }
@@ -98,13 +143,7 @@ namespace GlasshouseShared
                
                     { "id",items.Select(x => x.Key).ToList()},
                     { "name",items.Select(x => x.Value).ToList() },
-
-        };
-
-
-
-
-
+                };
         }
 
 

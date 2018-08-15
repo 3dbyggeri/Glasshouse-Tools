@@ -28,6 +28,12 @@ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 THE POSSIBILITY OF SUCH DAMAGE.
+
+GlasshouseExcel may utilize certain third party software. Such third party software is copyrighted by their respective owners as indicated below.
+Netoffice - MIT License - https://github.com/NetOfficeFw/NetOffice/blob/develop/LICENSE.txt
+Excel DNA - zlib License - https://github.com/Excel-DNA/ExcelDna/blob/master/LICENSE.txt
+RestSharp - Apache License - https://github.com/restsharp/RestSharp/blob/develop/LICENSE.txt
+Newtonsoft - The MIT License (MIT) - https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md
 */
 #endregion
 
@@ -101,12 +107,12 @@ namespace GlasshouseShared
                 }
                 else
                 {
-                    MessageBox.Show("'Response' failed to get "+response.ResponseUri + "\nError is "+response.StatusCode+" : "+response.ErrorMessage+ "\nUsername:'" + email + "'\nPassword:'" + password + "'\nContent:\n" + content);
+                    MessageBox.Show("'Response' failed to get " + response.ResponseUri + "\nError is " + response.StatusCode + " : " + response.ErrorMessage + "\nUsername:'" + email + "'\nPassword:'" + password + "'\nContent:\n" + content);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(email + " failed to log in. Please check user name and password and try again.\nError:\n"+ ex.Message);
+                MessageBox.Show(email + " failed to log in. Please check user name and password and try again.\nError:\n" + ex.Message);
                 return loggedIn;
             }
             return loggedIn;
@@ -153,7 +159,7 @@ namespace GlasshouseShared
         }
     }
 
-        public class LoginUser
+    public class LoginUser
     {
         public string api_key { get; set; }
     }
