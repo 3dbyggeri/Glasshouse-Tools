@@ -1,0 +1,17 @@
+﻿//https://richnewman.wordpress.com/2007/04/15/a-beginners-guide-to-calling-a-net-library-from-excel/
+//https://excel-dna.net/
+//https://github.com/Excel-DNA/IntelliSense
+//http://exceldna.typepad.com/blog/2006/01/some_new_exampl.html
+
+//https://sysmod.wordpress.com/2012/11/06/migrating-an-excel-vba-add-in-to-a-vb-net-xll-with-excel-dna-update/
+//https://www.codeproject.com/Articles/463282/Custom-Ribbon-Help-for-Office-VSTO-Add-ins
+
+//https://andysprague.com/tag/excel-dna/
+
+//https://andysprague.com/2017/02/03/my-first-custom-excel-ribbon-using-excel-dna/
+
+//https://andysprague.com/2017/11/30/netoffice-excel-add-validation-to-a-cell/
+
+//https://social.msdn.microsoft.com/Forums/vstudio/en-US/013389cd-0dde-479e-99b1-62991c1b6004/how-to-dynamically-add-items-in-ribbon-dropdown?forum=vsto
+
+//https://bert-toolkit.com/imagemso-list.html

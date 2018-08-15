@@ -1,0 +1,7 @@
+﻿//https://github.com/DynamoDS/DynamoSamples
+//https://github.com/DynamoDS/DynamoSamples/blob/master/src/SampleLibraryZeroTouch/Examples/BasicExample.cs
+//https://forum.dynamobim.com/t/zero-touch-how-to-return-list-of-elements/4756/4
+//http://archi-lab.net/tips-tricks-for-zerotouch-libraries-in-dynamo/
+//http://teocomi.com/dynamo-unchained-1-learn-how-to-develop-zero-touch-nodes-in-csharp/
+
+[IsVisibleInDynamoLibrary(false)] or [SupressImport] attributes on the entire namespace or classes in the assembly

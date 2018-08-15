@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<customUI xmlns='http://schemas.microsoft.com/office/2009/07/customui' onLoad='OnLoad'>
+  <ribbon>
+    <tabs>
+      <tab id='tabglasshouse' label='Glasshouse' visible='true'>
+        <group id='ghproject' label='Project' visible='true'>
+          <button id='btnGetProjects' label='Get Projects' screentip='Will dump your projects at the active cell'  size='large' imageMso='MicrosoftPublisher' onAction='btnGetProjects' visible='true'/>
+          <button id='btnGetProjectInfo' label='Get Project Info' screentip='Will dump project info for the currently selected project in the Project dropdown' size='large' imageMso='GroupPivotTableActiveField' onAction='btnGetProjectInfo' visible='true'/>
+          <dropDown id='cbProjects'
+                    screentip='List of projects'
+                      label='Project'
+                      getItemCount='cbProjects_GetItemCount'
+                      getItemID='cbProjects_GetItemID'
+                      getItemLabel='cbProjects_GetItemLabel'
+                      getSelectedItemID='cbProjects_GetSelectedItemID'
+                      onAction='cbProjects_onAction' />
+          <button id='btnRefreshProjectList' label='Refresh Project List' screentip='Refresh Project List' onAction='btnRefreshProjectList' visible='true'/>
+        </group >
+        <group id='ghview' label='View' visible='true'>
+          <button id='btnGetViews' label='Get Views' screentip='Will dump the views for the currently selected project in the Project dropdown' size='large' imageMso='AccessListCustom' onAction='btnGetViews' visible='true'/>
+          <button id='btnGetViewColumns' label='Get View Columns' screentip='Will dump the columnnames for the currently selected view in the View dropdown' size='large' imageMso='RightArrow2' onAction='btnGetViewColumns' visible='true'/>
+          <dropDown id='cbViews'
+                    screentip='List of views'
+                      label='Views'
+                      getItemCount='cbViews_GetItemCount'
+                      getItemID='cbViews_GetItemID'
+                      getItemLabel='cbViews_GetItemLabel'
+                      getSelectedItemID='cbViews_GetSelectedItemID'
+                      onAction='cbViews_onAction' />
+          <button id='btnRefreshViewList' label='Refresh View List' screentip='Refresh View List' onAction='btnRefreshViewList' visible='true'/>
+        </group >
+        <group id='ghentris' label='Entries' visible='true'>
+          <button id='btnGetViewEntries' label='Get View Entries' screentip='Will dump the all entries for the currently selected view in the View dropdown' size='large' imageMso='GroupCreateTables' onAction='btnGetViewEntries' visible='true'/>
+        </group >
+        <group id='ghsync' label='Sync' visible='true'>
+          <button id='btnRead' label='Read' screentip='Get data from Glasshouse'
+                  supertip='Read will look for the "GlassHouseJournalGUID" in the first 10x10 cells of the sheet and insert entries/update columns info. The data will be inserted either 2 rows down from "GlassHouseJournalGUID" or at the last used row – whatever comes last. Rows will be updated in the is a match between the "GlassHouseJournalGUID" in excel and Glasshouse – otherwise the missing entry from Glasshouse will be added to the end.'
+                  size='large' imageMso='ExportExcel' onAction='btnRead' visible='true'/>
+          <separator  id="Separator1" />
+          <button id='btnWrite' label='Update' screentip='Write data to Glasshouse'
+                  supertip='Update will look for the "GlassHouseJournalGUID" in the first 10x10 cells of the sheet read data from 2 row below that cell. Glasshouse will be updated if there is a guid in "GlassHouseJournalGUID" and there is written “update” below the a Glasshouse parameter. "GlassHouseJournalGUID" and others parameters like “Short Description” cannot be updated from excel.'
+                  size='large' imageMso='ImportExcel' onAction='btnWrite' visible='true'/>
+          <button id='btnWriteCSV' label='Write CSV' screentip='Write data to CSV file'
+                  supertip='Works like Update, except it will only write a CSV file'
+                  size='large' imageMso='ExportTextFile' onAction='btnWriteCSV' visible='true'/>
+          <separator  id="Separator2" />
+          <button id='btnValidator' label='Validator' screentip='Insert Validator dropdown at active cell'
+                  supertip='Insert Validator list - nothing or update'
+                  size='large' imageMso='DataValidation' onAction='btnValidator' visible='true'/>
+        </group >
+        <group id='ghsettings' label='User' visible='true'>
+          <button id='btnLogin' label='Login' screentip='Login into Glasshouse with you username and password' size='large' imageMso='AdpPrimaryKey' onAction='btnLogin' visible='true'/>
+          <button id='btnLogout' label='Logout' screentip='Logout of glasshouse and discard key'  size='large' imageMso='WindowClose' onAction='btnLogout' visible='true'/>
+        </group >
+        <group id='ghabout' label='About' visible='true'>
+          <button id='btnAbout' label='About' screentip='About Glasshouse Excel Tool' size='large' imageMso='Help' onAction='btnAbout' visible='true'/>
+        </group >
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
+

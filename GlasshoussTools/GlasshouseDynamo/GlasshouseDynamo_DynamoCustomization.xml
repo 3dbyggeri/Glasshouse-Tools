@@ -1,0 +1,11 @@
+﻿<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>GlasshouseDynamo</name>
+  </assembly>
+  <namespaces>
+    <namespace name="GlasshouseDynamo">
+      <category>GlasshouseDynamo</category>
+    </namespace>
+  </namespaces>
+</doc>
