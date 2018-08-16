@@ -181,7 +181,7 @@ namespace GlasshouseShared
             return new Dictionary<string, object>()
             {
 
-
+                { "id",project.project.id },
                 { "name",project.project.name },
                 { "created_at", project.project.created_at.ToString()},
                 { "is_processing", project.project.is_processing.ToString()},

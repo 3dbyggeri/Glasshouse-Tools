@@ -67,6 +67,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="extra\GlasshouseDemoFile.dyn" />
     <None Include="packages.config" />
     <Content Include="MoreOnDynamoZeroDev.txt" />
     <Content Include="pkg.json">
@@ -80,7 +81,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="dyf\" />
-    <Folder Include="extra\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GlasshouseShared\GlasshouseShared.csproj">
@@ -91,6 +91,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y "$(TargetDir)*.*" "$(AppData)\Dynamo\Dynamo Core\1.3\packages\$(ProjectName)\bin\"
-xcopy /Y "$(ProjectDir)pkg.json" "$(AppData)\Dynamo\Dynamo Core\1.3\packages\$(ProjectName)"</PostBuildEvent>
+xcopy /Y "$(ProjectDir)pkg.json" "$(AppData)\Dynamo\Dynamo Core\1.3\packages\$(ProjectName)"
+xcopy /Y "$(TargetDir)*.*" "$(AppData)\Dynamo\Dynamo Revit\1.3\packages\$(ProjectName)\bin\"
+xcopy /Y "$(ProjectDir)pkg.json" "$(AppData)\Dynamo\Dynamo Revit\1.3\packages\$(ProjectName)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
