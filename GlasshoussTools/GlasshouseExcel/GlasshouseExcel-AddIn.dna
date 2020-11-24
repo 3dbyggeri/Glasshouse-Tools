@@ -27,7 +27,7 @@
     <customUI xmlns='http://schemas.microsoft.com/office/2009/07/customui' onLoad='OnLoad'>
       <ribbon>
         <tabs>
-          <tab id='tabglasshouse' label='Glasshouse' visible='true'>
+          <tab id='tabglasshouse' label='GLASSHOUSE' visible='true'>
             <group id='ghproject' label='Project' visible='true'>
               <button id='btnGetProjects' label='Get Projects' screentip='Will dump your projects at the active cell'  size='large' imageMso='MicrosoftPublisher' onAction='btnGetProjects' visible='true'/>
               <button id='btnGetProjectInfo' label='Get Project Info' screentip='Will dump project info for the currently selected project in the Project dropdown' size='large' imageMso='GroupPivotTableActiveField' onAction='btnGetProjectInfo' visible='true'/>
@@ -63,7 +63,7 @@
                       size='large' imageMso='ExportExcel' onAction='btnRead' visible='true'/>
               <separator  id="Separator1" />
               <button id='btnWrite' label='Update' screentip='Write data to Glasshouse'
-                      supertip='Update will look for the "GlassHouseJournalGUID" in the first 10x10 cells of the sheet read data from 2 row below that cell. Glasshouse will be updated if there is a guid in "GlassHouseJournalGUID" and there is written “update” below the a Glasshouse parameter. "GlassHouseJournalGUID" and others parameters like “Short Description” cannot be updated from excel.'
+                      supertip='Update will look for the "GlassHouseJournalGUID" in the first 10x10 cells of the sheet read data from 2 row below that cell. Glasshouse will be updated if there is a guid in "GlassHouseJournalGUID" and there is written “update” below the a Glasshouse parameter. "GlassHouseJournalGUID" cannot be updated from excel.'
                       size='large' imageMso='ImportExcel' onAction='btnWrite' visible='true'/>
               <button id='btnWriteCSV' label='Write CSV' screentip='Write data to CSV file'
                       supertip='Works like Update, except it will only write a CSV file'

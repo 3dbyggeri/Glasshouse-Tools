@@ -2,7 +2,7 @@
 <customUI xmlns='http://schemas.microsoft.com/office/2009/07/customui' onLoad='OnLoad'>
   <ribbon>
     <tabs>
-      <tab id='tabglasshouse' label='Glasshouse' visible='true'>
+      <tab id='tabglasshouse' label='GLASSHOUSE' visible='true'>
         <group id='ghproject' label='Project' visible='true'>
           <button id='btnGetProjects' label='Get Projects' screentip='Will dump your projects at the active cell'  size='large' imageMso='MicrosoftPublisher' onAction='btnGetProjects' visible='true'/>
           <button id='btnGetProjectInfo' label='Get Project Info' screentip='Will dump project info for the currently selected project in the Project dropdown' size='large' imageMso='GroupPivotTableActiveField' onAction='btnGetProjectInfo' visible='true'/>

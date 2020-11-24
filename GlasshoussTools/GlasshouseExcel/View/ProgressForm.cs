@@ -1,6 +1,6 @@
 ﻿#region copyright notice
 /*
-Original work Copyright(c) 2018-2021 COWI
+Original work Copyright(c) 2018 COWI
     
 Copyright © COWI and individual contributors. All rights reserved.
 
@@ -39,43 +39,43 @@ Newtonsoft - The MIT License (MIT) - https://github.com/JamesNK/Newtonsoft.Json/
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
-using NetOffice.ExcelApi;
-using NetOffice.ExcelApi.Enums;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace NetOffice.Excel.Extensions.Extensions
+namespace GlasshouseExcel
 {
-    //https://colinlegg.wordpress.com/2015/04/12/naughty-data-validation-lists/
-    //https://andysprague.com/2017/11/30/netoffice-excel-add-validation-to-a-cell/
-    public static class CellValidationExtensions
+    public partial class ProgressForm : Form
     {
-        public static void AddCellListValidation(this Range cell, IList<string> allowedValues, string initialValue = null)
+        string _format;
+
+        public ProgressForm(string caption, string format, int max)
         {
-            var flatList = String.Join(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator, allowedValues.Select(x => x.ToString()).ToArray());
-            
-            // var flatList = allowedValues.Aggregate((x, y) => "{x},{y}");
-            //if (flatList.Length > 255)
-            //{
-            //    throw new ArgumentException("Combined number of chars in the list of allowedValues can't exceed 255 characters");
-            //}
-            cell.AddCellListValidation(flatList, initialValue);
+            _format = format;
+            InitializeComponent();
+            Text = caption;
+            label1.Text = (null == format) ? caption : string.Format(format, 0);
+            progressBar1.Minimum = 0;
+            progressBar1.Maximum = max;
+            progressBar1.Value = 0;
+            Show();
+            Application.DoEvents();
         }
 
-        private static void AddCellListValidation(this Range cell, string formula, string initialValue = null)
+        public void Increment()
         {
-            cell.Validation.Delete();
-            cell.Validation.Add(
-                XlDVType.xlValidateList,
-                XlDVAlertStyle.xlValidAlertInformation,
-                XlFormatConditionOperator.xlEqual,
-                formula,
-                Type.Missing);
-            cell.Validation.IgnoreBlank = true;
-            cell.Validation.InCellDropdown = true;
-            if (initialValue != null)
+            ++progressBar1.Value;
+
+            if (null != _format)
             {
-                cell.Value = initialValue;
+                label1.Text = string.Format(_format, progressBar1.Value);
             }
+            Application.DoEvents();
         }
     }
+
 }
