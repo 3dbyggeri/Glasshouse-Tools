@@ -1,6 +1,6 @@
 ﻿#region copyright notice
 /*
-Original work Copyright(c) 2018 COWI
+Original work Copyright(c) 2018-2021 COWI
     
 Copyright © COWI and individual contributors. All rights reserved.
 
@@ -52,7 +52,7 @@ namespace GlasshouseShared
     public class Views
     {
         
-        public static Dictionary<string, object> GetJournalViews(string apiKey,string projectId)
+        public static Dictionary<string, object> GetJournalViews(string apiKey,string projectId,string entryType = "", bool addall = false)
         {
             var client = new RestClient(GlasshouseShared.Utils.urlApi);
 
@@ -79,17 +79,38 @@ namespace GlasshouseShared
 
             foreach (cView c in views.views)
             {
-                dict.Add(c.system_name,c.human_name);
+                if (entryType.Length > 0)
+                {
+                    if (entryType.Equals(c.entrytype))
+                    {
+                        dict.Add(c.system_name, c.human_name);
+                    }
+                }
+                else
+                {
+                    dict.Add(c.system_name, c.human_name);
+                }
             }
 
             var items = from pair in dict
                         orderby pair.Value ascending
                         select pair;
 
+            var system_name = new List<string>();
+            var human_name = new List<string>();
+
+            if (addall == true)
+            {
+              system_name.Add("__GHALLDATA__");
+              human_name.Add("* ALL DATA *");
+            }
+            system_name.AddRange(items.Select(x => x.Key).ToList());
+            human_name.AddRange(items.Select(x => x.Value).ToList());
+                       
             return new Dictionary<string, object>()
                 {
-                    { "system_name", items.Select(x => x.Key).ToList()},
-                    { "human_name",items.Select(x => x.Value).ToList()}
+                    { "system_name",system_name},
+                    { "human_name",human_name}
                 };
 
             
@@ -103,6 +124,7 @@ namespace GlasshouseShared
         {
             public string system_name { get; set; }
             public string human_name { get; set; }
+            public string entrytype { get; set; }
         }
 
         

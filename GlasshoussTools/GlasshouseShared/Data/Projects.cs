@@ -1,6 +1,6 @@
 ﻿#region copyright notice
 /*
-Original work Copyright(c) 2018 COWI
+Original work Copyright(c) 2018-2021 COWI
     
 Copyright © COWI and individual contributors. All rights reserved.
 
@@ -50,6 +50,7 @@ namespace GlasshouseShared
 {
     public class Projects
     {
+        public static cTheProjects _project = null;
 
         /// <summary>
         /// Gets the projects.
@@ -80,7 +81,7 @@ namespace GlasshouseShared
             //var defaultStrings = (new int[10]).Select(x => "my value").ToList();
 
             return new Dictionary<string, object>()
-                { 
+                {
                     { "id", projects.projects.Select(x => x.id).Concat(projects.invited_projects.Select(x => x.id)).ToList()},
                     { "name",projects.projects.Select(x => x.name).Concat(projects.invited_projects.Select(x => x.name)).ToList() },
                     { "created_at", projects.projects.Select(x => x.created_at.ToString()).Concat(projects.invited_projects.Select(x => x.created_at.ToString())).ToList()},
@@ -127,7 +128,7 @@ namespace GlasshouseShared
 
             foreach (cInvitedProject p in projects.invited_projects)
             {
-                dict.Add(p.id, p.name);
+                if (dict.ContainsKey(p.id)==false) dict.Add(p.id, p.name);
             }
 
 
@@ -146,6 +147,85 @@ namespace GlasshouseShared
                 };
         }
 
+        /* test
+        public class GetProjects
+        {
+            public static Projects AsProjects(string apikey)
+            {
+                var client = new RestClient("https://app.glasshousebim.com/api/v1");
+
+                var request = new RestRequest("projects", Method.GET);
+
+                // easily add HTTP Headers
+                request.AddHeader("access-token", apikey);
+
+                request.RequestFormat = DataFormat.Json;
+
+                // execute the request
+                IRestResponse response = client.Execute(request);
+                var content = response.Content; // raw content as string
+
+                return JsonConvert.DeserializeObject<Projects>(content);
+            }
+
+            /// <summary>
+            /// Gets the projects.
+            /// </summary>
+            /// <param name="apiKey">The API key.</param>
+            /// <returns></returns>
+            public static Dictionary<string, object> AsDictionary(string apiKey)
+            {
+
+                var client = new RestClient(GlasshouseShared.Utils.urlApi);
+
+                var request = new RestRequest("projects", Method.GET);
+
+
+                // easily add HTTP Headers
+                request.AddHeader("access-token", apiKey);
+
+                request.RequestFormat = DataFormat.Json;
+
+                // execute the request
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode != System.Net.HttpStatusCode.OK) return null;
+
+                var content = response.Content; // raw content as string
+
+                cProjects projects = JsonConvert.DeserializeObject<cProjects>(content);
+
+                //var defaultStrings = (new int[10]).Select(x => "my value").ToList();
+
+                Dictionary<string, string> dict = new Dictionary<string, string>();
+
+                foreach (cProject p in projects.projects)
+                {
+                    dict.Add(p.id, p.name);
+                }
+
+                foreach (cInvitedProject p in projects.invited_projects)
+                {
+                    dict.Add(p.id, p.name);
+                }
+
+
+                var items = from pair in dict
+                            orderby pair.Value ascending
+                            select pair;
+
+
+                return new Dictionary<string, object>()
+                {
+                //{ "names",names },
+                //{ "ids", ids}
+               
+                    { "id",items.Select(x => x.Key).ToList()},
+                    { "name",items.Select(x => x.Value).ToList() },
+                };
+            }
+        }
+
+        */
 
         /// <summary>
         /// Gets the project information.
@@ -155,12 +235,28 @@ namespace GlasshouseShared
         /// <returns></returns>
         public static Dictionary<string, object> GetProjectInfo(string apiKey, string projectId)
         {
+            FetchProjectInfo(apiKey, projectId);
 
+            return new Dictionary<string, object>()
+            {
 
+                { "id",_project.project.id },
+                { "name",_project.project.name },
+                { "created_at", _project.project.created_at.ToString()},
+                { "is_processing", _project.project.is_processing.ToString()},
+                { "url", _project.project.url},
+                { "model_containers_url", _project.project.model_containers_url},
+                { "groupings_url", _project.project.groupings_url},
+                { "selected", _project.project.selected.ToString()},
+                { "collaborator_role", _project.project.collaborator_role}
+            };
+        }
+
+        public static void FetchProjectInfo(string apiKey, string projectId)
+        {
             var client = new RestClient(GlasshouseShared.Utils.urlApi);
 
             var request = new RestRequest(string.Format("projects/{0}", projectId), Method.GET);
-
 
             // easily add HTTP Headers
             request.AddHeader("access-token", apiKey);
@@ -169,36 +265,42 @@ namespace GlasshouseShared
 
             // execute the request
             IRestResponse response = client.Execute(request);
-            if (response.StatusCode != System.Net.HttpStatusCode.OK) return null;
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                _project = null;
+                return;
+            }
             var content = response.Content; // raw content as string
 
             //content = content.Replace("selected?", "selected");
-
-            cTheProjects project = JsonConvert.DeserializeObject<cTheProjects>(content);
-
-
-
-            return new Dictionary<string, object>()
-            {
-
-                { "id",project.project.id },
-                { "name",project.project.name },
-                { "created_at", project.project.created_at.ToString()},
-                { "is_processing", project.project.is_processing.ToString()},
-                { "url", project.project.url},
-                { "model_containers_url", project.project.model_containers_url},
-                { "groupings_url", project.project.groupings_url},
-                { "selected", project.project.selected.ToString()},
-                { "collaborator_role", project.project.collaborator_role}
-            };
-
-
-
+            _project = JsonConvert.DeserializeObject<cTheProjects>(content);
         }
 
+        public static void UpdateBimProperties(string apiKey, string projectId, Dictionary<string,string> properties)
+        {
+            var client = new RestClient(GlasshouseShared.Utils.urlApi);
 
+            var request = new RestRequest(string.Format("projects/{0}.json", projectId), Method.PUT);
 
+            // easily add HTTP Headers
+            request.AddHeader("access-token", apiKey);
+            request.AlwaysMultipartFormData = true;
 
+            foreach (KeyValuePair<string, string> kvp in properties)
+            {
+                request.AddParameter("project[bim_property_values_attributes][][human_name]", kvp.Key);
+                request.AddParameter("project[bim_property_values_attributes][][value]", kvp.Value);
+            }
+            request.RequestFormat = DataFormat.Json;
+
+            // execute the request
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                return;
+            }
+            var content = response.Content; // raw content as string
+        }
 
 
 
@@ -243,14 +345,59 @@ namespace GlasshouseShared
             [JsonProperty(PropertyName = "selected?")]
             public bool selected { get; set; }
             public string collaborator_role { get; set; }
+            public string client { get; set; }
+            public string location { get; set; }
+            public string size { get; set; }
+            public string architect { get; set; }
+            public string engineer { get; set; }
+            public string contractor { get; set; }
+            //public cBimPropertyValues bim_property_values { get; set; }
+            public object bim_property_values { get; set; }
         }
 
+        public class cBimPropertyValues
+        {
+            public List<cBimPropertyValue> cBimPropertyValue;
+        }
 
+        public class cBimPropertyValue
+        {
+            [JsonProperty("id")]
+            public long Id { get; set; }
+
+            [JsonProperty("project_id")]
+            public string ProjectId { get; set; }
+
+            [JsonProperty("propertyable_id")]
+            public string PropertyableId { get; set; }
+
+            [JsonProperty("propertyable_type")]
+            public string PropertyableType { get; set; }
+
+            [JsonProperty("system_name")]
+            public string SystemName { get; set; }
+
+            [JsonProperty("human_name")]
+            public string HumanName { get; set; }
+
+            [JsonProperty("value")]
+            public string Value { get; set; }
+
+            [JsonProperty("extra_data")]
+            public object ExtraData { get; set; }
+
+            [JsonProperty("created_at")]
+            public DateTimeOffset CreatedAt { get; set; }
+
+            [JsonProperty("updated_at")]
+            public DateTimeOffset UpdatedAt { get; set; }
+        }
 
         public class cTheProjects
         {
             public cTheProject project { get; set; }
         }
+
     }
 }
 

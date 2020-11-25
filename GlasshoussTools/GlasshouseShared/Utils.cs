@@ -1,6 +1,6 @@
 ﻿#region copyright notice
 /*
-Original work Copyright(c) 2018 COWI
+Original work Copyright(c) 2018-2021 COWI
     
 Copyright © COWI and individual contributors. All rights reserved.
 
@@ -43,6 +43,7 @@ using System.Globalization;
 using RestSharp;
 using Newtonsoft.Json;
 using System.Windows.Forms;
+
 
 namespace GlasshouseShared
 {
@@ -157,6 +158,8 @@ namespace GlasshouseShared
             }
             return val;
         }
+
+        
     }
 
     public class LoginUser
